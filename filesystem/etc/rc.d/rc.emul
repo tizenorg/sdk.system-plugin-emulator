@@ -8,13 +8,6 @@ C_='\033[0m'		#Color off
 
 echo -e "[${_G}rc.emul : script start ${C_}]"
 
-echo -e "[${_G}chmod +x /opt/media for various apps ${C_}]"
-chmod -R 777 /opt/media
-
-echo -e "[${_G}make symbolic link ${C_}]"
-ln -sf /mnt/mmc /sdcard
-ln -sf /proc/mounts /etc/mtab
-
 echo -e "[${_G}Setting power manager state value ${C_}]"
 /usr/bin/vconftool set -t int memory/pm/state 1 -f
 
