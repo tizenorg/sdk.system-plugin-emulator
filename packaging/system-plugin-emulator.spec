@@ -25,13 +25,18 @@ System plugin files for emulator
 find . -name .gitignore -exec rm -f {} \;
 cp -arf filesystem/* %{buildroot}
 
+# for legacy init
+ln -s /etc/init.d/ssh %{buildroot}/etc/rc.d/rc3.d/S50ssh
+
+# for systemd
 mkdir -p %{buildroot}/usr/lib/systemd/system/basic.target.wants
 mkdir -p %{buildroot}/usr/lib/systemd/system/multi-user.target.wants
-ln -s ../sdbd.service %{buildroot}/usr/lib/systemd/system/basic.target.wants/sdbd.service
-ln -s ../emul-opengl-mode.service %{buildroot}/usr/lib/systemd/system/basic.target.wants/emul-opengl-mode.service
-ln -s ../emul-opengl-yagl.service %{buildroot}/usr/lib/systemd/system/basic.target.wants/emul-opengl-yagl.service
-ln -s ../emul-alsa.service %{buildroot}/usr/lib/systemd/system/basic.target.wants/emul-alsa.service
-ln -s ../emul-legacy-start.service %{buildroot}/usr/lib/systemd/system/basic.target.wants/emul-legacy-start.service
+ln -s /usr/lib/systemd/system/sdbd.service %{buildroot}/usr/lib/systemd/system/basic.target.wants/sdbd.service
+ln -s /usr/lib/systemd/system/emul-opengl-mode.service %{buildroot}/usr/lib/systemd/system/basic.target.wants/emul-opengl-mode.service
+ln -s /usr/lib/systemd/system/emul-opengl-yagl.service %{buildroot}/usr/lib/systemd/system/basic.target.wants/emul-opengl-yagl.service
+ln -s /usr/lib/systemd/system/emul-alsa.service %{buildroot}/usr/lib/systemd/system/basic.target.wants/emul-alsa.service
+ln -s /usr/lib/systemd/system/emul-legacy-start.service %{buildroot}/usr/lib/systemd/system/basic.target.wants/emul-legacy-start.service
+ln -s /usr/lib/systemd/system/sshd.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/sshd.service
 
 %post
 mkdir -p /opt/usr
@@ -102,6 +107,7 @@ touch /dev/rtc1
 /etc/rc.d/rc3.d/S01simulator-alsa
 /etc/rc.d/rc3.d/S20vmodem
 /etc/rc.d/rc3.d/S45vconf-menuscreen
+/etc/rc.d/rc3.d/S50ssh
 /etc/rc.d/rc3.d/S96set_valperiod
 /etc/rc.d/rc5.d/S99zzzbackup_csa
 /etc/sshd_config
@@ -113,14 +119,16 @@ touch /dev/rtc1
 /usr/bin/mount_slp.sh
 /usr/bin/save_blenv
 /usr/bin/wlan.sh
-/usr/lib/systemd/system/basic.target.wants/emul-alsa.service
-/usr/lib/systemd/system/basic.target.wants/emul-legacy-start.service
-/usr/lib/systemd/system/basic.target.wants/emul-opengl-mode.service
-/usr/lib/systemd/system/basic.target.wants/emul-opengl-yagl.service
-/usr/lib/systemd/system/basic.target.wants/sdbd.service
 /usr/lib/systemd/system/emul-alsa.service
 /usr/lib/systemd/system/emul-legacy-start.service
 /usr/lib/systemd/system/emul-opengl-mode.service
 /usr/lib/systemd/system/emul-opengl-yagl.service
 /usr/lib/systemd/system/sdbd.service
+/usr/lib/systemd/system/basic.target.wants/emul-alsa.service
+/usr/lib/systemd/system/basic.target.wants/emul-legacy-start.service
+/usr/lib/systemd/system/basic.target.wants/emul-opengl-mode.service
+/usr/lib/systemd/system/basic.target.wants/emul-opengl-yagl.service
+/usr/lib/systemd/system/basic.target.wants/sdbd.service
+/usr/lib/systemd/system/sshd.service
+/usr/lib/systemd/system/multi-user.target.wants/sshd.service
 /usr/lib/udev/rules.d/95-tizen-emulator.rules

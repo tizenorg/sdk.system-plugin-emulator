@@ -8,9 +8,6 @@ C_='\033[0m'		#Color off
 
 echo -e "[${_G}rc.emul : script start ${C_}]"
 
-echo -e "[${_G}sshd start ${C_}]"
-/etc/init.d/ssh start
-
 echo -e "[${_G}chmod +x /opt/media for various apps ${C_}]"
 chmod -R 777 /opt/media
 
