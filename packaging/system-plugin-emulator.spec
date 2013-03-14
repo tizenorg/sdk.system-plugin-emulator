@@ -85,6 +85,7 @@ touch /dev/rtc1
 /bin/mdev
 /bin/route
 /bin/ubimnt.sh
+/etc/emulator/.emptydir
 /etc/init.d/csa-tools
 /etc/inittab
 /etc/mdev.conf
