@@ -34,7 +34,6 @@ ln -s ../emul-alsa.service %{buildroot}/usr/lib/systemd/system/basic.target.want
 ln -s ../emul-legacy-start.service %{buildroot}/usr/lib/systemd/system/basic.target.wants/emul-legacy-start.service
 ln -s ../emuld.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/emuld.service
 ln -s ../sensord.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/sensord.service
-ln -s ../vmodem-x86.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/vmodem-x86.service
 
 %post
 mkdir -p /opt/usr
@@ -128,8 +127,6 @@ touch /dev/rtc1
 /usr/lib/systemd/system/emuld.service
 /usr/lib/systemd/system/multi-user.target.wants/emuld.service
 /usr/lib/systemd/system/multi-user.target.wants/sensord.service
-/usr/lib/systemd/system/multi-user.target.wants/vmodem-x86.service
 /usr/lib/systemd/system/sdbd.service
 /usr/lib/systemd/system/sensord.service
-/usr/lib/systemd/system/vmodem-x86.service
 /usr/lib/udev/rules.d/95-tizen-emulator.rules
