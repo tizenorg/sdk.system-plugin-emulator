@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# script for launcher exit
+
+
+# find scim process and kill it first
+LIST=`ps ax | grep 'scim' | grep 'lib' | awk '{print $1}'`
+for PID in $LIST
+do
+kill -9 $PID
+done
+

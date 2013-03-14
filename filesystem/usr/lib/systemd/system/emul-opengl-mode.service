@@ -1,0 +1,8 @@
+[Unit]
+Description=OpenGL mode
+DefaultDependencies=no
+Before=basic.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c '/etc/virtgl.sh'

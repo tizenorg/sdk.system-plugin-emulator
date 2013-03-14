@@ -1,0 +1,2 @@
+/usr/sbin/gpsd udp://10.0.2.16:3579
+vconftool set -t int db/msg/smsc/val_period/0 255

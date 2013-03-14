@@ -1,0 +1,161 @@
+#!/bin/sh
+
+# Color set for ANSI TERM
+_R='\033[0;31;1m'	#Red
+_G='\033[0;32;1m'	#Green
+_Y='\033[0;33;1m'	#Yellow
+C_='\033[0m'		#Color off
+
+echo -e "[${_G}rc.sysinit : script starts${C_}]"
+echo -e "[${_G}mount...${C_}]"
+mount -t proc none /proc  
+mount -t tmpfs tmpfs /tmp
+#for emulator : /var/run only for supporting dpkg command
+mount -t tmpfs tmpfs /var/run
+mount -t sysfs none /sys    
+mount -t tmpfs runfs /run
+mount -t devtmpfs devtmpfs /dev
+mkdir -p /dev/pts
+mkdir -p /dev/shm
+mount -t tmpfs none /dev/shm
+mount -t devpts devpts /dev/pts
+mount -t debugfs none /sys/kernel/debug
+
+echo -e "[${_G}check codec dev node${C_}]"
+test -c /dev/codec || mknod -m 666 /dev/codec c 240 0
+
+echo -e "[${_G}mount filesystems storage${C_}]"
+mount -a
+
+#emulator's swapon
+echo -e "[${_G}mount swap /dev/vdb ${C_}]"
+/sbin/swapon /dev/vdb
+
+
+echo -e "[${_G}udev start${C_}]"
+UDEVD_MAX_CHILDS=1 /sbin/udevd --daemon
+/sbin/udevadm trigger
+
+echo -e "[${_G}create base directory in /opt, /var${C_}]"
+# construct directory hierarchy
+mkdir -p /opt/var/log/apt
+mkdir -p /opt/var/lib
+mkdir -p /opt/var/cache
+mkdir -p /var/run
+
+#make a file for /dev/rtc1
+touch /dev/rtc1
+chmod 777 /dev/rtc1
+
+if [ ! -e /opt/etc/.firstboot ]; then
+	echo -e "[${_Y}rc.firstboot${C_}]"
+	/etc/rc.d/rc.firstboot
+	touch /opt/etc/.firstboot
+fi
+
+echo -e "[${_G}set device node perm & security${C_}]"
+# Set device node permissions for security
+chown 0:6501 /dev/video0
+chown 0:6509 /dev/log_main
+chown 0:6509 /dev/log_events
+chown 0:6509 /dev/log_radio
+chown :audio /dev/snd/
+chmod 775 /dev/snd/
+chown :audio /dev/snd/controlC0
+chown :audio /dev/snd/pcmC0D0p
+chown :audio /dev/snd/pcmC0D1p
+chown :audio /dev/snd/timer
+chown 0:6508 /dev/snd/pcmC0D0c
+chown :video /dev/fb0
+chown :video /dev/video1
+chmod 666 /dev/glmem
+chmod 666 /dev/yagl
+
+if [ -e /opt/etc/.coredump ]; then
+	# enable coredump
+	echo "/opt/usr/share/crash/core/%p_%s_%e.core" > /proc/sys/kernel/core_pattern
+	ulimit -c unlimited
+else
+	echo "core dump disabled"
+	ulimit -c 0
+fi
+
+echo -e "[${_G}run profile${C_}]"
+# Run profile
+. /etc/profile
+
+# Check rw mode
+DEVEL_UPDATE_MODE=`grep devel_update_boot /proc/cmdline`
+if [ -f /opt/etc/.devel_update ] && [ -z "$DEVEL_UPDATE_MODE" ]; then
+	touch /opt/etc/.hib_capturing
+	rm /opt/etc/.devel_update
+fi
+
+#for emulator
+echo -e "[${_G}make symbolic link for i686${C_}]"
+cd /usr/lib/enlightenment/modules/comp-slp/
+ln -s linux-gnu-i686-ver-pre-svn-08 linux-gnu-i486-ver-pre-svn-08
+cd /usr/lib/enlightenment/modules/e17-extra-module-keyrouter/
+ln -s linux-gnu-i686-ver-pre-svn-08 linux-gnu-i486-ver-pre-svn-08
+cd /usr/lib/enlightenment/modules/e17-extra-module-wmready/
+ln -s linux-gnu-i686-ver-pre-svn-08 linux-gnu-i486-ver-pre-svn-08
+cd /usr/lib/enlightenment/modules/illume2-slp/
+ln -s linux-gnu-i686-ver-pre-svn-08 linux-gnu-i486-ver-pre-svn-08
+cd /usr/lib/edje/modules/icon_calendar/
+ln -s linux-gnu-i686-1.0.0 linux-gnu-i486-1.0.0
+
+#for emulator : where is press binary?
+/usr/bin/press 1 # wait input to stop running scripts
+if [ $? -eq 0 ]; then
+	echo "script is stopped"
+	# prepare usbnet before exit
+	insmod /opt/driver/g_ether.ko
+	sleep 1
+	ifconfig usb0 192.168.129.3 netmask 255.255.255.0
+	# Run all rc0 scripts
+	for i in /etc/rc.d/rc0.d/*; do
+		echo -e "[${_G}${i} start${C_}]"
+		$i start
+	done
+elif [ -f /opt/etc/.hib_capturing ] && [ -z "$DEVEL_UPDATE_MODE" ]; then
+	echo -e "[${_Y}run all rc4 scripts${C_}]"
+	# Run all rc4 scripts
+	/usr/bin/write-to-lcd /dev/fb3 "Initializing daemons"
+	echo "there is /opt/etc/.hib_capturing  hibernation capturing mode"
+	for i in /etc/rc.d/rc4.d/*; do
+		echo -e "[${_G}${i} start${C_}]"
+		$i start
+	done
+else
+	# Run all rc3 scripts
+	echo -e "[${_G}run all rc3 scripts${C_}]"
+	echo "normal boot"
+	# modify script for checking boot up progress...
+	NUMBER_OF_RCS=`ls /etc/rc.d/rc3.d/ | wc -l`
+	count=0;
+	for i in /etc/rc.d/rc3.d/*; do
+		echo -e "[${_G}${i} start${C_}]"
+		$i start
+		count=$((count + 1))
+		echo `expr $count \* 100 / $NUMBER_OF_RCS` > /dev/esm
+	done
+fi
+
+
+# symbolic link
+if [ ! -e /opt/apps ]; then
+	echo -e "[${_G}link /opt/apps -> /opt/media/apps${C_}]"
+	ln -s /opt/media/apps /opt/apps
+fi
+
+# inhouse home-directory
+chown 5000:5000 /home/inhouse
+
+if [ "$DEVEL_UPDATE_MODE" ]; then
+	touch /opt/etc/.devel_update
+fi
+
+#for emulator : 
+/etc/rc.d/rc.emul
+
+echo -e "[${_G}rc.sysinit : script end ${C_}]"

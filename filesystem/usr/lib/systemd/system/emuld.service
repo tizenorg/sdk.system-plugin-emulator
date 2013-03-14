@@ -1,0 +1,6 @@
+[Unit]
+Description=emuld
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/emuld
