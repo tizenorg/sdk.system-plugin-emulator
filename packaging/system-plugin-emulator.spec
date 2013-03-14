@@ -32,8 +32,6 @@ ln -s ../emul-opengl-mode.service %{buildroot}/usr/lib/systemd/system/basic.targ
 ln -s ../emul-opengl-yagl.service %{buildroot}/usr/lib/systemd/system/basic.target.wants/emul-opengl-yagl.service
 ln -s ../emul-alsa.service %{buildroot}/usr/lib/systemd/system/basic.target.wants/emul-alsa.service
 ln -s ../emul-legacy-start.service %{buildroot}/usr/lib/systemd/system/basic.target.wants/emul-legacy-start.service
-ln -s ../emuld.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/emuld.service
-ln -s ../sensord.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/sensord.service
 
 %post
 mkdir -p /opt/usr
@@ -124,9 +122,5 @@ touch /dev/rtc1
 /usr/lib/systemd/system/emul-legacy-start.service
 /usr/lib/systemd/system/emul-opengl-mode.service
 /usr/lib/systemd/system/emul-opengl-yagl.service
-/usr/lib/systemd/system/emuld.service
-/usr/lib/systemd/system/multi-user.target.wants/emuld.service
-/usr/lib/systemd/system/multi-user.target.wants/sensord.service
 /usr/lib/systemd/system/sdbd.service
-/usr/lib/systemd/system/sensord.service
 /usr/lib/udev/rules.d/95-tizen-emulator.rules

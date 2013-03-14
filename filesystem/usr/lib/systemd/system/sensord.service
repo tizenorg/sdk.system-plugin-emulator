@@ -1,6 +1,0 @@
-[Unit]
-Description=sensord
-
-[Service]
-Type=simple
-ExecStart=/usr/sbin/sensord
