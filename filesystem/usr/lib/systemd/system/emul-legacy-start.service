@@ -1,6 +1,7 @@
 [Unit]
 Description=Legacy emulator startup script
 DefaultDependencies=no
+After=vconf-setup.service
 Before=basic.target
 
 [Service]
