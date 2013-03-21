@@ -6,4 +6,7 @@ Before=basic.target
 
 [Service]
 Type=oneshot
+
+# W/A for alarm-service
+ExecStartPre=/bin/touch /dev/rtc1
 ExecStart=/etc/rc.d/rc.emul
