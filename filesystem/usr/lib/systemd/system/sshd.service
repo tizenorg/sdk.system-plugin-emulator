@@ -3,8 +3,8 @@ Description=OpenSSH Daemon
 After=network.target
 
 [Service]
-ExecStart=/usr/sbin/sshd -D
-ExecReload=/bin/kill -HUP $MAINPID
+Type=forking
+ExecStart=/etc/init.d/ssh start
 KillMode=process
 Restart=always
 
