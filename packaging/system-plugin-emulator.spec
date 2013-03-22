@@ -76,6 +76,7 @@ ln -sf /opt/usr/ug      /opt/ug
 if [ -e /etc/fstab ]; then
 	echo "/opt/var   /var      bind    bind             0 0" >> /etc/fstab
 	echo "/tmpfs     /tmp      tmpfs   defaults         0 0" >> /etc/fstab
+	echo "/dev/vdb   swap      swap    defaults         0 0" >> /etc/fstab
 fi
 
 #make rtc1 device for alarm service
