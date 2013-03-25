@@ -102,6 +102,7 @@ touch /dev/rtc1
 /etc/inittab
 /etc/mdev.conf
 /etc/mtools.conf
+/etc/preconf.d/emulator_ns.preinit
 /etc/profile.d/proxy_setting.sh
 /etc/profile.d/sensord_setting.sh
 /etc/profile.d/simulator-opengl.sh

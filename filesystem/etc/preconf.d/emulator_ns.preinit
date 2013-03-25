@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# Set up DNS for emulator
+rm -rf /etc/resolv.conf
+echo "nameserver 10.0.2.3" > /etc/resolv.conf
+
