@@ -109,7 +109,7 @@ touch /dev/rtc1
 /etc/profile.d/simulator-env.sh
 /etc/profile.d/simulator-opengl.sh
 /etc/profile.d/system.sh
-/etc/rc.d/init.d/simulator-alsa
+/etc/init.d/emulator-alsa
 /etc/rc.d/rc.emul
 /etc/rc.d/rc.firstboot
 /etc/rc.d/rc.shutdown

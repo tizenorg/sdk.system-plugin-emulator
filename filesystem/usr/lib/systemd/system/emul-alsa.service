@@ -5,7 +5,7 @@ Before=basic.target
 
 [Service]
 Type=oneshot
-ExecStart=/etc/rc.d/init.d/simulator-alsa
+ExecStart=/etc/init.d/emulator-alsa
 
 [Install]
 WantedBy=emulator_preinit.target
