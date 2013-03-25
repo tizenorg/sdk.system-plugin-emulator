@@ -6,3 +6,6 @@ Before=basic.target
 [Service]
 Type=oneshot
 ExecStart=/bin/sh -c '/etc/virtgl.sh'
+
+[Install]
+WantedBy=emulator_preinit.target

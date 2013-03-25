@@ -9,5 +9,5 @@ KillMode=process
 Restart=always
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=emulator.target
 

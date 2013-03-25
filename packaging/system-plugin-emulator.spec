@@ -1,7 +1,10 @@
-Summary: System plugin for emulator
 Name: system-plugin-emulator
-Version: 0.0.1
+Version: 0.0.2
 Release: 1
+
+%define systemd_dir     /usr/lib/systemd
+
+Summary: System plugin for emulator
 License: Apache-2.0
 Group: System/Base
 Requires: udev
@@ -29,14 +32,20 @@ cp -arf filesystem/* %{buildroot}
 ln -s /etc/init.d/ssh %{buildroot}/etc/rc.d/rc3.d/S50ssh
 
 # for systemd
-mkdir -p %{buildroot}/usr/lib/systemd/system/basic.target.wants
-mkdir -p %{buildroot}/usr/lib/systemd/system/multi-user.target.wants
-ln -s /usr/lib/systemd/system/sdbd.service %{buildroot}/usr/lib/systemd/system/basic.target.wants/sdbd.service
-ln -s /usr/lib/systemd/system/emul-opengl-mode.service %{buildroot}/usr/lib/systemd/system/basic.target.wants/emul-opengl-mode.service
-ln -s /usr/lib/systemd/system/emul-opengl-yagl.service %{buildroot}/usr/lib/systemd/system/basic.target.wants/emul-opengl-yagl.service
-ln -s /usr/lib/systemd/system/emul-alsa.service %{buildroot}/usr/lib/systemd/system/basic.target.wants/emul-alsa.service
-ln -s /usr/lib/systemd/system/emul-legacy-start.service %{buildroot}/usr/lib/systemd/system/basic.target.wants/emul-legacy-start.service
-ln -s /usr/lib/systemd/system/sshd.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/sshd.service
+# for emulator_preinit.target
+mkdir -p %{buildroot}/%{systemd_dir}/system/basic.target.wants
+ln -s %{systemd_dir}/system/emulator_preinit.target %{buildroot}/%{systemd_dir}/system/basic.target.wants/emulator_preinit.target
+mkdir -p %{buildroot}/%{systemd_dir}/system/emulator_preinit.target.wants
+ln -s %{systemd_dir}/system/emul-opengl-mode.service %{buildroot}/%{systemd_dir}/system/emulator_preinit.target.wants/emul-opengl-mode.service
+ln -s %{systemd_dir}/system/emul-opengl-yagl.service %{buildroot}/%{systemd_dir}/system/emulator_preinit.target.wants/emul-opengl-yagl.service
+ln -s %{systemd_dir}/system/emul-alsa.service %{buildroot}/%{systemd_dir}/system/emulator_preinit.target.wants/emul-alsa.service
+ln -s %{systemd_dir}/system/emul-legacy-start.service %{buildroot}/%{systemd_dir}/system/emulator_preinit.target.wants/emul-legacy-start.service
+# for emulator.target
+mkdir -p %{buildroot}/%{systemd_dir}/system/multi-user.target.wants
+ln -s %{systemd_dir}/system/emulator.target %{buildroot}/%{systemd_dir}/system/multi-user.target.wants/emulator.target
+mkdir -p %{buildroot}/%{systemd_dir}/system/emulator.target.wants
+ln -s %{systemd_dir}/system/sdbd.service %{buildroot}/%{systemd_dir}/system/emulator.target.wants/sdbd.service
+ln -s %{systemd_dir}/system/sshd.service %{buildroot}/%{systemd_dir}/system/emulator.target.wants/sshd.service
 
 %post
 mkdir -p /opt/usr
@@ -120,16 +129,20 @@ touch /dev/rtc1
 /usr/bin/mount_slp.sh
 /usr/bin/save_blenv
 /usr/bin/wlan.sh
+/usr/lib/systemd/system/emulator_preinit.target
+/usr/lib/systemd/system/emulator.target
+/usr/lib/systemd/system/basic.target.wants/emulator_preinit.target
+/usr/lib/systemd/system/multi-user.target.wants/emulator.target
 /usr/lib/systemd/system/emul-alsa.service
 /usr/lib/systemd/system/emul-legacy-start.service
 /usr/lib/systemd/system/emul-opengl-mode.service
 /usr/lib/systemd/system/emul-opengl-yagl.service
+/usr/lib/systemd/system/emulator_preinit.target.wants/emul-alsa.service
+/usr/lib/systemd/system/emulator_preinit.target.wants/emul-legacy-start.service
+/usr/lib/systemd/system/emulator_preinit.target.wants/emul-opengl-mode.service
+/usr/lib/systemd/system/emulator_preinit.target.wants/emul-opengl-yagl.service
 /usr/lib/systemd/system/sdbd.service
-/usr/lib/systemd/system/basic.target.wants/emul-alsa.service
-/usr/lib/systemd/system/basic.target.wants/emul-legacy-start.service
-/usr/lib/systemd/system/basic.target.wants/emul-opengl-mode.service
-/usr/lib/systemd/system/basic.target.wants/emul-opengl-yagl.service
-/usr/lib/systemd/system/basic.target.wants/sdbd.service
 /usr/lib/systemd/system/sshd.service
-/usr/lib/systemd/system/multi-user.target.wants/sshd.service
+/usr/lib/systemd/system/emulator.target.wants/sdbd.service
+/usr/lib/systemd/system/emulator.target.wants/sshd.service
 /usr/lib/udev/rules.d/95-tizen-emulator.rules

@@ -11,3 +11,6 @@ Type=oneshot
 ExecStartPre=/bin/touch /dev/rtc1
 
 ExecStart=/etc/rc.d/rc.emul
+
+[Install]
+WantedBy=emulator_preinit.target
