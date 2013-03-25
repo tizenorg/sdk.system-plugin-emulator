@@ -120,7 +120,6 @@ touch /dev/rtc1
 /etc/rc.d/rc3.d/S50ssh
 /etc/rc.d/rc3.d/S96set_valperiod
 /etc/rc.d/rc5.d/S99zzzbackup_csa
-/etc/sshd_config
 /etc/virtgl.sh
 /etc/yagl.sh
 /lib/udev/rules.d/99-serial-console.rules
