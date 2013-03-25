@@ -102,13 +102,9 @@ touch /dev/rtc1
 /etc/inittab
 /etc/mdev.conf
 /etc/mtools.conf
-/etc/preconf.d/sshd.sh
-/etc/profile.d/launcher.sh
 /etc/profile.d/proxy_setting.sh
 /etc/profile.d/sensord_setting.sh
-/etc/profile.d/simulator-env.sh
 /etc/profile.d/simulator-opengl.sh
-/etc/profile.d/system.sh
 /etc/init.d/emulator-alsa
 /etc/rc.d/rc.emul
 /etc/rc.d/rc.firstboot
