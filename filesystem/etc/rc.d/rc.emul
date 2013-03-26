@@ -15,37 +15,6 @@ echo -e "[${_G}Initialize battery level ${C_}]"
 #/usr/bin/vconftool set -t int memory/Battery/Level 5 -f
 /usr/bin/vconftool set -t int memory/sysman/battery_status_low 4 -f
 
-#echo -e "[${_G}Mount SD card ${C_}]"
-#mount -o umask=000 /dev/mmcblk0 /mnt/mmc
-#chmod 777 /opt/storage/sdcard
-
-#MMC_MOUNT=`/bin/mount | grep mmc`
-#if [ -n "$MMC_MOUNT" ]; then
-#	echo -e "[${_G}MMC storage detected ${C_}]"
-#	/usr/bin/vconftool set -t memory/sysman/mmc 1 -f
-#	/usr/bin/vconftool set -t int memory/filemanager/Mmc 2 -f
-#fi 
-
-echo -e "[${_G}Mount host directory${C_}]"
-test -d "/mnt/host" || mkdir "/mnt/host"
-if grep "cifs=" /proc/cmdline ; then
-        cifs=`sed 's/^.*cifs=\([^, ]*\).*$/\1/g' /proc/cmdline`
-        opts=`sed 's/^.*cifs=\([^, ]*\),username=\([^, ]*\),password=\([^, ]*\).*$/username=\2,password=\3/g' /proc/cmdline`
-        cifs=`echo $cifs | tr [a-z] [A-Z]`
-        if mount -t cifs //10.0.2.2/$cifs /mnt/host -o $opts,file_mode=0777,dir_mode=0777; then
-		echo -e "[${_Y}Mount.cifs succeed${C_}]"
-	else
-		echo -e "[${_R}Mount.cifs fail!!!!${C_}]"
-	fi
-fi
-if grep "virtio-9p" /proc/cmdline ; then
-	if mount -t 9p -o trans=virtio fileshare /mnt/host -oversion=9p2000.L -o msize=65536; then
-		echo -e "[${_Y}Mount.9pfs succeed${C_}]"
-	else
-		echo -e "[${_R}Mount.9pfs fail!!!!${C_}]"
-	fi
-fi
-
 if grep -q "enable_cam" /proc/cmdline ; then
 	if grep -q "enable_cam=1" /proc/cmdline ; then
 		echo -e "[${_Y}Webcam is connected. We can use '/dev/video0' for camera.${C_}]"
@@ -54,9 +23,6 @@ if grep -q "enable_cam" /proc/cmdline ; then
 		rm -rf /dev/video0
 	fi
 fi
-
-echo -e "[${_G}to generate modules.dep and map files${C_}]"
-depmod -a
 
 #--move to rc3.d/S30brgihtness
 #echo -e "[${_G}to change brightness's group${C_}]"

@@ -1,5 +1,5 @@
 Name: system-plugin-emulator
-Version: 0.0.2
+Version: 0.0.3
 Release: 1
 
 %define systemd_dir     /usr/lib/systemd
@@ -38,7 +38,8 @@ ln -s %{systemd_dir}/system/emulator_preinit.target %{buildroot}/%{systemd_dir}/
 mkdir -p %{buildroot}/%{systemd_dir}/system/emulator_preinit.target.wants
 ln -s %{systemd_dir}/system/emul-opengl-mode.service %{buildroot}/%{systemd_dir}/system/emulator_preinit.target.wants/emul-opengl-mode.service
 ln -s %{systemd_dir}/system/emul-opengl-yagl.service %{buildroot}/%{systemd_dir}/system/emulator_preinit.target.wants/emul-opengl-yagl.service
-ln -s %{systemd_dir}/system/emul-alsa.service %{buildroot}/%{systemd_dir}/system/emulator_preinit.target.wants/emul-alsa.service
+ln -s %{systemd_dir}/system/emul-setup-audio-volume.service %{buildroot}/%{systemd_dir}/system/emulator_preinit.target.wants/emul-setup-audio-volume.service
+ln -s %{systemd_dir}/system/emul-mount-hostdir.service %{buildroot}/%{systemd_dir}/system/emulator_preinit.target.wants/emul-mount-hostdir.service
 ln -s %{systemd_dir}/system/emul-legacy-start.service %{buildroot}/%{systemd_dir}/system/emulator_preinit.target.wants/emul-legacy-start.service
 # for emulator.target
 mkdir -p %{buildroot}/%{systemd_dir}/system/multi-user.target.wants
@@ -97,8 +98,12 @@ touch /dev/rtc1
 /bin/mdev
 /bin/route
 /bin/ubimnt.sh
-/etc/emulator/.emptydir
+/etc/emulator/setup-audio-volume.sh
+/etc/emulator/mount-hostdir.sh
 /etc/init.d/csa-tools
+/etc/init.d/setup-audio-volume
+/etc/init.d/mount-hostdir
+/etc/init.d/vmodemd
 /etc/inittab
 /etc/mdev.conf
 /etc/mtools.conf
@@ -106,17 +111,16 @@ touch /dev/rtc1
 /etc/profile.d/proxy_setting.sh
 /etc/profile.d/sensord_setting.sh
 /etc/profile.d/simulator-opengl.sh
-/etc/init.d/emulator-alsa
 /etc/rc.d/rc.emul
 /etc/rc.d/rc.firstboot
 /etc/rc.d/rc.shutdown
 /etc/rc.d/rc.sysinit
-/etc/rc.d/rc3.d/S01simulator-alsa
-/etc/rc.d/rc3.d/S20vmodem
+/etc/rc.d/rc3.d/S01setup-audio-volume
+/etc/rc.d/rc3.d/S02mount-hostdir
+/etc/rc.d/rc3.d/S03vmodemd
 /etc/rc.d/rc3.d/S45vconf-menuscreen
 /etc/rc.d/rc3.d/S50ssh
 /etc/rc.d/rc3.d/S96set_valperiod
-/etc/rc.d/rc5.d/S99zzzbackup_csa
 /etc/virtgl.sh
 /etc/yagl.sh
 /lib/udev/rules.d/99-serial-console.rules
@@ -129,11 +133,13 @@ touch /dev/rtc1
 /usr/lib/systemd/system/emulator.target
 /usr/lib/systemd/system/basic.target.wants/emulator_preinit.target
 /usr/lib/systemd/system/multi-user.target.wants/emulator.target
-/usr/lib/systemd/system/emul-alsa.service
+/usr/lib/systemd/system/emul-setup-audio-volume.service
+/usr/lib/systemd/system/emul-mount-hostdir.service
 /usr/lib/systemd/system/emul-legacy-start.service
 /usr/lib/systemd/system/emul-opengl-mode.service
 /usr/lib/systemd/system/emul-opengl-yagl.service
-/usr/lib/systemd/system/emulator_preinit.target.wants/emul-alsa.service
+/usr/lib/systemd/system/emulator_preinit.target.wants/emul-setup-audio-volume.service
+/usr/lib/systemd/system/emulator_preinit.target.wants/emul-mount-hostdir.service
 /usr/lib/systemd/system/emulator_preinit.target.wants/emul-legacy-start.service
 /usr/lib/systemd/system/emulator_preinit.target.wants/emul-opengl-mode.service
 /usr/lib/systemd/system/emulator_preinit.target.wants/emul-opengl-yagl.service
