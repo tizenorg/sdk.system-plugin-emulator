@@ -109,7 +109,6 @@ touch /dev/rtc1
 /etc/mtools.conf
 /etc/preconf.d/emulator_ns.preinit
 /etc/profile.d/proxy_setting.sh
-/etc/profile.d/sensord_setting.sh
 /etc/profile.d/simulator-opengl.sh
 /etc/rc.d/rc.emul
 /etc/rc.d/rc.firstboot
@@ -120,7 +119,6 @@ touch /dev/rtc1
 /etc/rc.d/rc3.d/S03vmodemd
 /etc/rc.d/rc3.d/S45vconf-menuscreen
 /etc/rc.d/rc3.d/S50ssh
-/etc/rc.d/rc3.d/S96set_valperiod
 /etc/virtgl.sh
 /etc/yagl.sh
 /lib/udev/rules.d/99-serial-console.rules
