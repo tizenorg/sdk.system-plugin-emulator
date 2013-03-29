@@ -103,7 +103,6 @@ touch /dev/rtc1
 /etc/init.d/csa-tools
 /etc/init.d/setup-audio-volume
 /etc/init.d/mount-hostdir
-/etc/init.d/vmodemd
 /etc/inittab
 /etc/mdev.conf
 /etc/mtools.conf
@@ -116,7 +115,6 @@ touch /dev/rtc1
 /etc/rc.d/rc.sysinit
 /etc/rc.d/rc3.d/S01setup-audio-volume
 /etc/rc.d/rc3.d/S02mount-hostdir
-/etc/rc.d/rc3.d/S03vmodemd
 /etc/rc.d/rc3.d/S45vconf-menuscreen
 /etc/rc.d/rc3.d/S50ssh
 /etc/virtgl.sh
