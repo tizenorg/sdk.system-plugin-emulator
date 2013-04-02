@@ -92,6 +92,7 @@ touch /dev/rtc1
 /etc/inittab
 /etc/mdev.conf
 /etc/mtools.conf
+/etc/preconf.d/systemd_conf.preinit
 /etc/preconf.d/sshd.sh
 /etc/profile.d/launcher.sh
 /etc/profile.d/proxy_setting.sh
