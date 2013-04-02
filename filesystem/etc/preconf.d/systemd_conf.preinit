@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Prepare systemd log output
+# For system.conf
+echo "DefaultStandardOutput=kmsg" >> /etc/systemd/system.conf
+echo "DefaultStandardError=kmsg" >> /etc/systemd/system.conf
+# For user.conf
+echo "DefaultStandardOutput=inherit" >> /etc/systemd/user.conf
+echo "DefaultStandardError=inherit" >> /etc/systemd/user.conf
+
