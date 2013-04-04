@@ -12,9 +12,9 @@ if grep "gles=1" /proc/cmdline ; then
                ln -s -f /usr/lib/host-gl/libGLESv1_CM.so.1.0 /usr/lib/libGLESv1_CM.so.1
                ln -s -f /usr/lib/host-gl/libGLESv2.so.1.0 /usr/lib/libGLESv2.so
                ln -s -f /usr/lib/host-gl/libGLESv2.so.1.0 /usr/lib/libGLESv2.so.1
-               rm /usr/lib/st_GL.so
-               rm /usr/lib/egl_gallium.so
-               rm /usr/lib/libglapi.so*
+               rm -f /usr/lib/st_GL.so
+               rm -f /usr/lib/egl_gallium.so
+               rm -f /usr/lib/libglapi.so*
 else
         echo -e "[${_G} Emulator does not support gles hw acceleration. ${C_}]"
                echo -e "[${_G} Apply to use sw mesa gles library. ${C_}]"

@@ -1,6 +1,6 @@
 Summary: System plugin for emulator
 Name: system-plugin-emulator
-Version: 0.0.1
+Version: 0.0.2
 Release: 1
 License: Apache-2.0
 Group: System/Base
