@@ -29,6 +29,12 @@ find . -name .gitignore -exec rm -f {} \;
 cp -arf filesystem/* %{buildroot}
 
 # for legacy init
+if [ ! -d %{buildroot}/etc/rc.d/rc3.d ]; then
+    mkdir -p %{buildroot}/etc/rc.d/rc3.d
+fi
+ln -s /etc/init.d/emulator-opengl %{buildroot}/etc/rc.d/rc3.d/S01emulator-opengl
+ln -s /etc/init.d/setup-audio-volume %{buildroot}//etc/rc.d/rc3.d/S02setup-audio-volume
+ln -s /etc/init.d/mount-hostdir %{buildroot}//etc/rc.d/rc3.d/S03mount-hostdir
 ln -s /etc/init.d/ssh %{buildroot}/etc/rc.d/rc3.d/S50ssh
 
 # for systemd
@@ -49,39 +55,6 @@ ln -s %{systemd_dir}/system/sdbd.service %{buildroot}/%{systemd_dir}/system/emul
 ln -s %{systemd_dir}/system/sshd.service %{buildroot}/%{systemd_dir}/system/emulator.target.wants/sshd.service
 
 %post
-mkdir -p /opt/usr
-if [ -d /opt/media ]; then
-        cp -aprf /opt/media/* /opt/usr/media/.
-	rm -rf /opt/media
-else
-        mkdir -p /opt/usr/media
-fi
-if [ -d /opt/apps ]; then
-        cp -aprf /opt/apps/* /opt/usr/apps/.
-	rm -rf /opt/apps
-else
-        mkdir -p /opt/usr/apps
-fi
-if [ -d /opt/live ]; then
-        cp -aprf /opt/live/* /opt/usr/live/.
-	rm -rf /opt/live
-else
-        mkdir -p /opt/usr/live
-fi
-if [ -d /opt/ug ]; then
-        cp -aprf /opt/ug/* /opt/usr/ug/.
-	rm -rf /opt/ug
-else
-        mkdir -p /opt/usr/ug
-fi
-mkdir -p /opt/osp
-mkdir -p /opt/usr/dbspace
-ln -sf /opt/usr/apps /opt/apps
-ln -sf /opt/usr/media /opt/media
-ln -sf /opt/usr/live    /opt/live
-ln -sf /opt/usr/osp/share       /opt/osp/share
-ln -sf /opt/usr/ug      /opt/ug
-
 #make fstab
 if [ -e /etc/fstab ]; then
 	echo "/opt/var   /var      bind    bind             0 0" >> /etc/fstab
@@ -89,43 +62,26 @@ if [ -e /etc/fstab ]; then
 	echo "/dev/vdb   swap      swap    defaults         0 0" >> /etc/fstab
 fi
 
-#make rtc1 device for alarm service
-touch /dev/rtc1
-
 %files
-/bin/change-booting-mode.sh
-/bin/ifconfig
-/bin/mdev
-/bin/route
-/bin/ubimnt.sh
 /etc/emulator/setup-audio-volume.sh
 /etc/emulator/mount-hostdir.sh
-/etc/init.d/csa-tools
+/etc/emulator/virtgl.sh
+/etc/emulator/yagl.sh
+/etc/init.d/emulator-opengl
 /etc/init.d/setup-audio-volume
 /etc/init.d/mount-hostdir
 /etc/inittab
-/etc/mdev.conf
-/etc/mtools.conf
 /etc/preconf.d/emulator_ns.preinit
 /etc/preconf.d/systemd_conf.preinit
 /etc/profile.d/proxy_setting.sh
-/etc/profile.d/simulator-opengl.sh
 /etc/rc.d/rc.emul
 /etc/rc.d/rc.firstboot
 /etc/rc.d/rc.shutdown
 /etc/rc.d/rc.sysinit
-/etc/rc.d/rc3.d/S01setup-audio-volume
-/etc/rc.d/rc3.d/S02mount-hostdir
-/etc/rc.d/rc3.d/S45vconf-menuscreen
+/etc/rc.d/rc3.d/S01emulator-opengl
+/etc/rc.d/rc3.d/S02setup-audio-volume
+/etc/rc.d/rc3.d/S03mount-hostdir
 /etc/rc.d/rc3.d/S50ssh
-/etc/virtgl.sh
-/etc/yagl.sh
-/lib/udev/rules.d/99-serial-console.rules
-/opt/home/root/.launcher/launcher.exit
-/opt/media/.emptydir
-/usr/bin/mount_slp.sh
-/usr/bin/save_blenv
-/usr/bin/wlan.sh
 /usr/lib/systemd/system/emulator_preinit.target
 /usr/lib/systemd/system/emulator.target
 /usr/lib/systemd/system/basic.target.wants/emulator_preinit.target

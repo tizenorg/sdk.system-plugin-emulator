@@ -11,33 +11,4 @@ echo -e "[${_G}rc.emul : script start ${C_}]"
 echo -e "[${_G}Setting power manager state value ${C_}]"
 /usr/bin/vconftool set -t int memory/pm/state 1 -f
 
-echo -e "[${_G}Initialize battery level ${C_}]"
-#/usr/bin/vconftool set -t int memory/Battery/Level 5 -f
-/usr/bin/vconftool set -t int memory/sysman/battery_status_low 4 -f
-
-if grep -q "enable_cam" /proc/cmdline ; then
-	if grep -q "enable_cam=1" /proc/cmdline ; then
-		echo -e "[${_Y}Webcam is connected. We can use '/dev/video0' for camera.${C_}]"
-	else
-		echo -e "[${_Y}Webcam is not connected! We will remove '/dev/video0'.${C_}]"
-		rm -rf /dev/video0
-	fi
-fi
-
-#--move to rc3.d/S30brgihtness
-#echo -e "[${_G}to change brightness's group${C_}]"
-#chgrp system_bklight /sys/class/backlight/emulator/brightness
-#chmod g+w /sys/class/backlight/emulator/brightness
-
-#echo -e "[${_G}to change lcd_power's group${C_}]"
-#chown -R root:system_bklight /sys/devices/virtual/lcd/emulator/lcd_power
-#--
-
-echo -e "[${_G}Initialize display setting value${C_}]"
-##/usr/bin/vconftool set -t int db/setting/Brightness "24" -f
-/usr/bin/vconftool set -t int db/sysman/lcd_backlight_normal "600" -f
-
-echo -e "[${_G}For menu_screen booting..${C_}]" 
-/usr/bin/vconftool set -t int memory/startapps/sequence 1 -f
-
 echo -e "[${_G}rc.emul : script end ${C_}]"
