@@ -1,5 +1,5 @@
 Name: system-plugin-emulator
-Version: 0.0.4
+Version: 0.0.5
 Release: 1
 
 %define systemd_dir     /usr/lib/systemd
@@ -40,19 +40,19 @@ ln -s /etc/init.d/ssh %{buildroot}/etc/rc.d/rc3.d/S50ssh
 # for systemd
 # for emulator_preinit.target
 mkdir -p %{buildroot}/%{systemd_dir}/system/basic.target.wants
-ln -s %{systemd_dir}/system/emulator_preinit.target %{buildroot}/%{systemd_dir}/system/basic.target.wants/emulator_preinit.target
+ln -s %{systemd_dir}/system/emulator_preinit.target %{buildroot}/%{systemd_dir}/system/basic.target.wants/
 mkdir -p %{buildroot}/%{systemd_dir}/system/emulator_preinit.target.wants
-ln -s %{systemd_dir}/system/emul-opengl-mode.service %{buildroot}/%{systemd_dir}/system/emulator_preinit.target.wants/emul-opengl-mode.service
-ln -s %{systemd_dir}/system/emul-opengl-yagl.service %{buildroot}/%{systemd_dir}/system/emulator_preinit.target.wants/emul-opengl-yagl.service
-ln -s %{systemd_dir}/system/emul-setup-audio-volume.service %{buildroot}/%{systemd_dir}/system/emulator_preinit.target.wants/emul-setup-audio-volume.service
-ln -s %{systemd_dir}/system/emul-mount-hostdir.service %{buildroot}/%{systemd_dir}/system/emulator_preinit.target.wants/emul-mount-hostdir.service
-ln -s %{systemd_dir}/system/emul-legacy-start.service %{buildroot}/%{systemd_dir}/system/emulator_preinit.target.wants/emul-legacy-start.service
+ln -s %{systemd_dir}/system/emul-opengl-mode.service %{buildroot}/%{systemd_dir}/system/emulator_preinit.target.wants/
+ln -s %{systemd_dir}/system/emul-opengl-yagl.service %{buildroot}/%{systemd_dir}/system/emulator_preinit.target.wants/
+ln -s %{systemd_dir}/system/emul-setup-audio-volume.service %{buildroot}/%{systemd_dir}/system/emulator_preinit.target.wants/
+ln -s %{systemd_dir}/system/emul-mount-hostdir.service %{buildroot}/%{systemd_dir}/system/emulator_preinit.target.wants/
+ln -s %{systemd_dir}/system/emul-common-preinit.service %{buildroot}/%{systemd_dir}/system/emulator_preinit.target.wants/
 # for emulator.target
 mkdir -p %{buildroot}/%{systemd_dir}/system/multi-user.target.wants
-ln -s %{systemd_dir}/system/emulator.target %{buildroot}/%{systemd_dir}/system/multi-user.target.wants/emulator.target
+ln -s %{systemd_dir}/system/emulator.target %{buildroot}/%{systemd_dir}/system/multi-user.target.wants/
 mkdir -p %{buildroot}/%{systemd_dir}/system/emulator.target.wants
-ln -s %{systemd_dir}/system/sdbd.service %{buildroot}/%{systemd_dir}/system/emulator.target.wants/sdbd.service
-ln -s %{systemd_dir}/system/sshd.service %{buildroot}/%{systemd_dir}/system/emulator.target.wants/sshd.service
+ln -s %{systemd_dir}/system/sdbd.service %{buildroot}/%{systemd_dir}/system/emulator.target.wants/
+ln -s %{systemd_dir}/system/sshd.service %{buildroot}/%{systemd_dir}/system/emulator.target.wants/
 
 %post
 #make fstab
@@ -88,12 +88,12 @@ fi
 /usr/lib/systemd/system/multi-user.target.wants/emulator.target
 /usr/lib/systemd/system/emul-setup-audio-volume.service
 /usr/lib/systemd/system/emul-mount-hostdir.service
-/usr/lib/systemd/system/emul-legacy-start.service
+/usr/lib/systemd/system/emul-common-preinit.service
 /usr/lib/systemd/system/emul-opengl-mode.service
 /usr/lib/systemd/system/emul-opengl-yagl.service
 /usr/lib/systemd/system/emulator_preinit.target.wants/emul-setup-audio-volume.service
 /usr/lib/systemd/system/emulator_preinit.target.wants/emul-mount-hostdir.service
-/usr/lib/systemd/system/emulator_preinit.target.wants/emul-legacy-start.service
+/usr/lib/systemd/system/emulator_preinit.target.wants/emul-common-preinit.service
 /usr/lib/systemd/system/emulator_preinit.target.wants/emul-opengl-mode.service
 /usr/lib/systemd/system/emulator_preinit.target.wants/emul-opengl-yagl.service
 /usr/lib/systemd/system/sdbd.service

@@ -8,7 +8,9 @@ C_='\033[0m'		#Color off
 
 echo -e "[${_G}rc.emul : script start ${C_}]"
 
-echo -e "[${_G}Setting power manager state value ${C_}]"
-/usr/bin/vconftool set -t int memory/pm/state 1 -f
+# commented out by caramis...
+# It is not needed since backlight turn off after 10 minutes.
+#echo -e "[${_G}Setting power manager state value ${C_}]"
+#/usr/bin/vconftool set -t int memory/pm/state 1 -f
 
 echo -e "[${_G}rc.emul : script end ${C_}]"
