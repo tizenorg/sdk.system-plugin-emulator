@@ -19,19 +19,21 @@ if [ ! -d $CHECK_SENSOR ]; then
 	if [ ! -d $CHECK_LIGHT ]; then
 		mkdir /opt/sensor/light
 	fi
-	
+
 	if [ ! -d $CHECK_PROXI ]; then
 		mkdir /opt/sensor/proxi
 	fi
-	
+
 	if [ ! -d $CHECK_GEO ]; then
 		mkdir /opt/sensor/geo
 	fi
-	
+
 	if [ ! -d $CHECK_GYRO ]; then
 		mkdir /opt/sensor/gyro
 	fi
-	
+
+	chmod -R 777 /opt/seneor/
+
 	touch /opt/sensor/accel/name
 	echo "accel_sim" > /opt/sensor/accel/name
 	touch /opt/sensor/accel/xyz
@@ -78,6 +80,7 @@ else
 	echo "0 -90 0 3" > /opt/sensor/geo/raw
 	echo "1 0 -10" > /opt/sensor/geo/tesla
 fi
+
 
 if [ ! -d $CHECK_NFC ]; then
 	mkdir /opt/nfc
