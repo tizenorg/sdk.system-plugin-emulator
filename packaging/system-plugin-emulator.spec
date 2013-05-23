@@ -1,6 +1,6 @@
 Name: system-plugin-emulator
 Version: 0.0.10
-Release: 1
+Release: 2
 
 %define systemd_dir     /usr/lib/systemd
 
@@ -10,8 +10,11 @@ Group: System/Base
 Requires: udev
 Requires: util-linux
 Requires: sysvinit
+Requires: filesystem >= 2.3
+Requires: filesystem-tizen >= 2.3
 Requires(post): setup
 Requires(post): coreutils
+Provides: /etc/fstab
 Source0: %{name}-%{version}.tar.gz
 Source1001: packaging/%{name}.manifest
 
@@ -54,20 +57,13 @@ ln -s %{systemd_dir}/system/sshd.service %{buildroot}/%{systemd_dir}/system/emul
 # for host file sharing
 mkdir -p %{buildroot}/mnt/host
 
-%post
-#make fstab
-if [ -e /etc/fstab ]; then
-	echo "/opt/var   /var      bind    bind             0 0" >> /etc/fstab
-	echo "/tmpfs     /tmp      tmpfs   defaults         0 0" >> /etc/fstab
-	echo "/dev/vdb   swap      swap    defaults         0 0" >> /etc/fstab
-fi
-
 %files
 /etc/emulator/setup-audio-volume.sh
 /etc/emulator/mount-hostdir.sh
 /etc/emulator/model-config.sh
 /etc/init.d/setup-audio-volume
 /etc/init.d/mount-hostdir
+/etc/fstab
 /etc/inittab
 /etc/preconf.d/emulator_ns.preinit
 /etc/preconf.d/systemd_conf.preinit
