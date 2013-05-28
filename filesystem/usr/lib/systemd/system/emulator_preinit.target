@@ -1,0 +1,12 @@
+# Target for emulator specified preinit service
+# This target runs after vconf-setup.service in basic.target
+
+[Unit]
+Description=Emulator specified preinit
+Requires=basic.target
+After=vconf-setup.service
+AllowIsolate=no
+
+[Install]
+WantedBy=basic.target
+

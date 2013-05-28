@@ -1,8 +1,0 @@
-chmod 777 /opt/var/kdb/db
-
-if test -x /usr/bin/vmodem_x86 ; then
-	/usr/bin/vmodem_x86 &
-fi
-
-/usr/bin/emuld &
-/usr/sbin/sensord &

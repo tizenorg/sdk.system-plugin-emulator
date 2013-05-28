@@ -1,2 +1,0 @@
-ACTION=="add|change", SUBSYSTEM=="tty", KERNEL=="s3c2410_serial2", SYMLINK="serial_console"
-SUBSYSTEM=="tty", KERNEL=="s3c2410_serial[0-9]*", TAG+="systemd"

@@ -1,11 +1,10 @@
 [Unit]
-Description=OpenGL mode
+Description=Mount host directory
 DefaultDependencies=no
-Before=basic.target
 
 [Service]
 Type=oneshot
-ExecStart=/bin/sh -c '/etc/emulator/virtgl.sh'
+ExecStart=/etc/emulator/mount-hostdir.sh
 
 [Install]
 WantedBy=emulator_preinit.target

@@ -1,0 +1,12 @@
+# Target for emulator specified service
+# This target runs after network.service in multi-user.target
+
+[Unit]
+Description=Emulator specified
+Requires=multi-user.target
+After=network.service
+AllowIsolate=no
+
+[Install]
+WantedBy=multi-user.target
+
