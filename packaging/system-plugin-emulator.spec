@@ -32,7 +32,6 @@ cp -arf filesystem/* %{buildroot}
 if [ ! -d %{buildroot}/etc/rc.d/rc3.d ]; then
     mkdir -p %{buildroot}/etc/rc.d/rc3.d
 fi
-ln -s /etc/init.d/emulator-opengl %{buildroot}/etc/rc.d/rc3.d/S01emulator-opengl
 ln -s /etc/init.d/setup-audio-volume %{buildroot}//etc/rc.d/rc3.d/S02setup-audio-volume
 ln -s /etc/init.d/mount-hostdir %{buildroot}//etc/rc.d/rc3.d/S03mount-hostdir
 ln -s /etc/init.d/ssh %{buildroot}/etc/rc.d/rc3.d/S50ssh
@@ -42,8 +41,6 @@ ln -s /etc/init.d/ssh %{buildroot}/etc/rc.d/rc3.d/S50ssh
 mkdir -p %{buildroot}/%{systemd_dir}/system/basic.target.wants
 ln -s %{systemd_dir}/system/emulator_preinit.target %{buildroot}/%{systemd_dir}/system/basic.target.wants/
 mkdir -p %{buildroot}/%{systemd_dir}/system/emulator_preinit.target.wants
-ln -s %{systemd_dir}/system/emul-opengl-mode.service %{buildroot}/%{systemd_dir}/system/emulator_preinit.target.wants/
-ln -s %{systemd_dir}/system/emul-opengl-yagl.service %{buildroot}/%{systemd_dir}/system/emulator_preinit.target.wants/
 ln -s %{systemd_dir}/system/emul-setup-audio-volume.service %{buildroot}/%{systemd_dir}/system/emulator_preinit.target.wants/
 ln -s %{systemd_dir}/system/emul-mount-hostdir.service %{buildroot}/%{systemd_dir}/system/emulator_preinit.target.wants/
 ln -s %{systemd_dir}/system/emul-common-preinit.service %{buildroot}/%{systemd_dir}/system/emulator_preinit.target.wants/
@@ -65,9 +62,6 @@ fi
 %files
 /etc/emulator/setup-audio-volume.sh
 /etc/emulator/mount-hostdir.sh
-/etc/emulator/virtgl.sh
-/etc/emulator/yagl.sh
-/etc/init.d/emulator-opengl
 /etc/init.d/setup-audio-volume
 /etc/init.d/mount-hostdir
 /etc/inittab
@@ -78,7 +72,6 @@ fi
 /etc/rc.d/rc.firstboot
 /etc/rc.d/rc.shutdown
 /etc/rc.d/rc.sysinit
-/etc/rc.d/rc3.d/S01emulator-opengl
 /etc/rc.d/rc3.d/S02setup-audio-volume
 /etc/rc.d/rc3.d/S03mount-hostdir
 /etc/rc.d/rc3.d/S50ssh
@@ -89,13 +82,9 @@ fi
 /usr/lib/systemd/system/emul-setup-audio-volume.service
 /usr/lib/systemd/system/emul-mount-hostdir.service
 /usr/lib/systemd/system/emul-common-preinit.service
-/usr/lib/systemd/system/emul-opengl-mode.service
-/usr/lib/systemd/system/emul-opengl-yagl.service
 /usr/lib/systemd/system/emulator_preinit.target.wants/emul-setup-audio-volume.service
 /usr/lib/systemd/system/emulator_preinit.target.wants/emul-mount-hostdir.service
 /usr/lib/systemd/system/emulator_preinit.target.wants/emul-common-preinit.service
-/usr/lib/systemd/system/emulator_preinit.target.wants/emul-opengl-mode.service
-/usr/lib/systemd/system/emulator_preinit.target.wants/emul-opengl-yagl.service
 /usr/lib/systemd/system/sdbd.service
 /usr/lib/systemd/system/sshd.service
 /usr/lib/systemd/system/emulator.target.wants/sdbd.service
