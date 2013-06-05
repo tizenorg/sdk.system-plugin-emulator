@@ -51,6 +51,9 @@ mkdir -p %{buildroot}/%{systemd_dir}/system/emulator.target.wants
 ln -s %{systemd_dir}/system/sdbd.service %{buildroot}/%{systemd_dir}/system/emulator.target.wants/
 ln -s %{systemd_dir}/system/sshd.service %{buildroot}/%{systemd_dir}/system/emulator.target.wants/
 
+# for host file sharing
+mkdir -p %{buildroot}/mnt/host
+
 %post
 #make fstab
 if [ -e /etc/fstab ]; then
@@ -91,3 +94,4 @@ fi
 /usr/lib/systemd/system/emulator.target.wants/sdbd.service
 /usr/lib/systemd/system/emulator.target.wants/sshd.service
 /usr/lib/udev/rules.d/95-tizen-emulator.rules
+%dir /mnt/host
