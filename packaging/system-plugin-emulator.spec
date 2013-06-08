@@ -1,5 +1,5 @@
 Name: system-plugin-emulator
-Version: 0.0.6
+Version: 0.0.7
 Release: 1
 
 %define systemd_dir     /usr/lib/systemd
@@ -62,6 +62,7 @@ fi
 %files
 /etc/emulator/setup-audio-volume.sh
 /etc/emulator/mount-hostdir.sh
+/etc/emulator/model-config.sh
 /etc/init.d/setup-audio-volume
 /etc/init.d/mount-hostdir
 /etc/inittab
