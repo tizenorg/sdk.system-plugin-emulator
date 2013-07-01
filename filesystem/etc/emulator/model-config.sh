@@ -25,6 +25,25 @@ if grep --silent "video=" $CMDLINE ; then
             HEIGHT_KEY="tizen.org\/feature\/screen.height\" type=\"int\""
             sed -i s/"$HEIGHT_KEY".*\</"$HEIGHT_KEY"\>"$HEIGHT"\</ $XML
             echo -e "[${_G} width=$WIDTH, height=$HEIGHT ${C_}]"
+
+            # screen size
+            SCREENSIZE_KEY="tizen.org\/feature\/screen.size.normal."
+            SCREENSIZE_KEY_WVGA=""$SCREENSIZE_KEY"480.800\" type=\"bool\""
+            SCREENSIZE_KEY_HD=""$SCREENSIZE_KEY"720.1280\" type=\"bool\""
+
+            if [ $WIDTH -eq 480 ] && [ $HEIGHT -eq 800 ] ; then
+                # WVGA
+                sed -i s/"$SCREENSIZE_KEY_WVGA".*\</"$SCREENSIZE_KEY_WVGA"\>true\</ $XML
+                sed -i s/"$SCREENSIZE_KEY_HD".*\</"$SCREENSIZE_KEY_HD"\>false\</ $XML
+            elif [ $WIDTH -eq 720 ] && [ $HEIGHT -eq 1280 ] ; then
+                # HD
+                sed -i s/"$SCREENSIZE_KEY_WVGA".*\</"$SCREENSIZE_KEY_WVGA"\>false\</ $XML
+                sed -i s/"$SCREENSIZE_KEY_HD".*\</"$SCREENSIZE_KEY_HD"\>true\</ $XML
+            else
+                # etc
+                sed -i s/"$SCREENSIZE_KEY_WVGA".*\</"$SCREENSIZE_KEY_WVGA"\>false\</ $XML
+                sed -i s/"$SCREENSIZE_KEY_HD".*\</"$SCREENSIZE_KEY_HD"\>false\</ $XML
+            fi
         fi
 fi
 
