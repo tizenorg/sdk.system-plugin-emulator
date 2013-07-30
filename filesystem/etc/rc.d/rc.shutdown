@@ -1,0 +1,40 @@
+export DISPLAY=:0
+killall power_manager
+killall -9 udevd
+#killall -9 system_server
+killall -9 xinit
+
+rm -rf /tmp/vip/*                                                               
+rm -rf /tmp/permanent/* 
+
+echo "Run Shutdown animation..."
+nice -n -15 /usr/bin/boot-animation --offmsg " " &
+sleep 1
+
+echo "Stopping menu screen..."  
+killall -9 menu_screen  
+
+echo "Stopping all applications..."  
+/usr/bin/enter_deepsleep  
+
+echo "Stopping indicator..."
+killall -9 indicator
+
+value=1
+while [&value != "0"];
+do
+ value='vconftool get memory/boot_animation/finished | awk '{print $4}''
+ sleep 0.5
+done
+sleep 1
+echo "Turn off LCD after finishing boot-animation"
+xset dpms force off
+
+# factory resetting...
+# flag set by factory-reset.sh
+if [ -f /opt/.factoryreset ]; then
+	/usr/bin/run-factory-reset.sh
+fi
+
+#echo 4 > /sys/class/graphics/fb0/blank
+

@@ -1,0 +1,13 @@
+[Unit]
+Description=OpenSSH Daemon
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/etc/init.d/ssh start
+KillMode=process
+Restart=always
+
+[Install]
+WantedBy=emulator.target
+

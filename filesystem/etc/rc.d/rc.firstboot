@@ -1,0 +1,7 @@
+#!/bin/sh
+
+/sbin/ldconfig
+
+if [ -e /opt/system/csc/.factoryreset ]; then
+	rm -f /opt/system/csc/.factoryreset
+fi

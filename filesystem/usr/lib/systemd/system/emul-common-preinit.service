@@ -1,0 +1,16 @@
+[Unit]
+Description=Legacy emulator startup script
+DefaultDependencies=no
+After=vconf-setup.service
+Before=basic.target
+
+[Service]
+Type=oneshot
+
+# platform features
+ExecStartPre=/bin/sh -c '/etc/emulator/model-config.sh'
+# W/A for alarm-service
+ExecStart=/bin/touch /dev/rtc1
+
+[Install]
+WantedBy=emulator_preinit.target

@@ -1,0 +1,27 @@
+#System startup
+si::sysinit:/etc/rc.d/rc.sysinit
+net::once:/etc/rc.d/rc.network
+
+id:1:initdefault:
+
+# Console
+#ttyS0::respawn:/bin/sh
+#con:12345:respawn:/sbin/agetty ttyS0 115200 vt100
+#::askfirst:/bin/sh 
+
+#Logging , move to rc.sysinit
+#::sysinit:/bin/cp -rf /var/log/messages /var/log/messages.prev
+#::sysinit:/bin/cp -rf /var/log/messages.0 /var/log/messages.0.prev
+#::sysinit:/bin/touch /var/log/messages
+#::once:/sbin/syslogd
+#::once:/sbin/klogd
+
+#System shutdown
+#ca:12345:ctrlaltdel:/sbin/reboot 
+bye:06:wait:/etc/rc.d/rc.shutdown 
+rebt:6:wait:/sbin/reboot -d -f -i
+
+# Frambuffer Console
+#ttyS1::respawn:/bin/sh
+#tty1::respawn:/bin/sh
+#tty2::respawn:/bin/sh

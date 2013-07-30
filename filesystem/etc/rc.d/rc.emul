@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# Color set for ANSI TERM
+_R='\033[0;31;1m'	#Red
+_G='\033[0;32;1m'	#Green
+_Y='\033[0;33;1m'	#Yellow
+C_='\033[0m'		#Color off
+
+echo -e "[${_G}rc.emul : script start ${C_}]"
+
+# commented out by caramis...
+# It is not needed since backlight turn off after 10 minutes.
+#echo -e "[${_G}Setting power manager state value ${C_}]"
+#/usr/bin/vconftool set -t int memory/pm/state 1 -f
+
+echo -e "[${_G}rc.emul : script end ${C_}]"
