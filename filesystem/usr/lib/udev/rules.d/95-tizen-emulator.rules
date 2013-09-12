@@ -2,6 +2,7 @@ KERNEL=="glmem",        MODE="0666", SMACK="*"
 KERNEL=="yagl",         MODE="0666", SMACK="*"
 
 KERNEL=="codec",        GROUP="hwcodec", MODE="0666", SMACK="device::hwcodec"
+KERNEL=="brillcodec",   GROUP="hwcodec", MODE="0666", SMACK="device::hwcodec"
 
 KERNEL=="video0",       GROUP="camera", MODE="0660", SMACK="device::camera"
 KERNEL=="video1",       GROUP="video", MODE="0660", SMACK="device::video"
