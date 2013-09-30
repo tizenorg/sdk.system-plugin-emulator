@@ -1,5 +1,5 @@
 Name: system-plugin-emulator
-Version: 0.0.11
+Version: 0.0.12
 Release: 1
 
 %define systemd_dir     /usr/lib/systemd
@@ -54,6 +54,10 @@ ln -s %{systemd_dir}/system/sshd.service %{buildroot}/%{systemd_dir}/system/emul
 # for host file sharing
 mkdir -p %{buildroot}/mnt/host
 
+# include license
+mkdir -p %{buildroot}/usr/share/license
+cp LICENSE %{buildroot}/usr/share/license/%{name}
+
 %post
 #make fstab
 if [ -e /etc/fstab ]; then
@@ -95,3 +99,4 @@ fi
 /usr/lib/systemd/system/emulator.target.wants/sshd.service
 /usr/lib/udev/rules.d/95-tizen-emulator.rules
 %dir /mnt/host
+/usr/share/license/%{name}
