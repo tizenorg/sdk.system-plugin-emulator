@@ -1,3 +1,6 @@
+* Mon Sep 30 14:30:50 UTC 2013 GiWoong Kim <giwoong.kim@samsung.com>
+- added /opt/nfc/sdkMsg flushing to rc.shutdown
+
 * Mon Sep 30 02:57:50 UTC 2013 Kitae Kim <kt920.kim@samsung.com>
 - include license file into package.
 

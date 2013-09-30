@@ -1,5 +1,5 @@
 Name: system-plugin-emulator
-Version: 0.0.12
+Version: 0.0.13
 Release: 1
 
 %define systemd_dir     /usr/lib/systemd
