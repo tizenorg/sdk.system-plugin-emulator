@@ -1,0 +1,29 @@
+* Tue Nov 26 11:41:26 KST 2013 Sooyoung Ha <yoosah.ha@samsung.com>
+- modify fstab on spec file.
+
+* Mon Nov 25 17:08:11 UTC 2013 Sooyoung Ha <yoosah.ha@samsung.com>
+- add some service files from system-plugin-exynos git repository.
+
+* Fri Nov  1 06:19:37 UTC 2013 GiWoong Kim <giwoong.kim@samsung.com>
+- modified model-config.sh
+
+* Fri Oct 11 13:14:14 UTC 2013 Kitae Kim <kt920.kim@samsung.com>
+- remove sdbd.service since sdbd package has included the service file.
+
+* Fri Oct 11 10:18:17 UTC 2013 GiWoong Kim <giwoong.kim@samsung.com>
+- Merge rc.shutdown 'system-plugin-slp' into emulator
+
+* Mon Sep 30 14:30:50 UTC 2013 GiWoong Kim <giwoong.kim@samsung.com>
+- added /opt/nfc/sdkMsg flushing to rc.shutdown
+
+* Mon Sep 30 02:57:50 UTC 2013 Kitae Kim <kt920.kim@samsung.com>
+- include license file into package.
+
+* Thu Sep 12 19:03:38 UTC 2013 Kitae Kim <kt920.kim@samsung.com>
+- added a rule for new codec device.
+
+* Mon Jul 01 2013 GiWoong Kim <giwoong.kim@samsung.com>
+- manage a key value of screen size for each model
+
+* Wed Jun 26 2013 GiWoong Kim <giwoong.kim@samsung.com>
+- added number checking routine to model-config.sh

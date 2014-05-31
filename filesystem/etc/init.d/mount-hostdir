@@ -1,0 +1,2 @@
+#!/bin/sh
+/etc/emulator/mount-hostdir.sh

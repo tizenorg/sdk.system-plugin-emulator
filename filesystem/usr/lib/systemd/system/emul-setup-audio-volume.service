@@ -1,0 +1,10 @@
+[Unit]
+Description=Audio volume setup on emulator
+DefaultDependencies=no
+
+[Service]
+Type=oneshot
+ExecStart=/etc/emulator/setup-audio-volume.sh
+
+[Install]
+WantedBy=emulator_preinit.target

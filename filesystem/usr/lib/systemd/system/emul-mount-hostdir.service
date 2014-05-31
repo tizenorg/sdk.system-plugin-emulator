@@ -1,0 +1,10 @@
+[Unit]
+Description=Mount host directory
+DefaultDependencies=no
+
+[Service]
+Type=oneshot
+ExecStart=/etc/emulator/mount-hostdir.sh
+
+[Install]
+WantedBy=emulator_preinit.target
