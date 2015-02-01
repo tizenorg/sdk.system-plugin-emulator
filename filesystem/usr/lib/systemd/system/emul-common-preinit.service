@@ -9,6 +9,8 @@ Type=oneshot
 
 # platform features
 ExecStartPre=/bin/sh -c '/etc/emulator/model-config.sh'
+# for boot-animation
+ExecStartPre=/bin/sh -c '/etc/emulator/select-boot-animation.sh'
 # W/A for alarm-service
 ExecStart=/bin/touch /dev/rtc1
 
