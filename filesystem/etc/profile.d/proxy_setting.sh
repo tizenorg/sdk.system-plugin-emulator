@@ -31,3 +31,4 @@ if grep -q "socks_proxy=" /proc/cmdline ; then
             export "socks_proxy=socks://${__proxy}/"
         fi
 fi
+export "no_proxy=localhost,127.0.0.1/8,10.0.0.0/16"

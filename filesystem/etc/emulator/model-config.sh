@@ -11,7 +11,7 @@ if grep --silent "video=" $CMDLINE ; then
         echo -e "[${_G} modify the resolution value of platform features: ${C_}]"
 
         VIDEO=`sed s/.*video=// $CMDLINE | cut -d ' ' -f1`
-        FORMAT=`echo $VIDEO | cut -d ',' -f2`
+        FORMAT=`echo $VIDEO | cut -d ':' -f2 | cut -d ',' -f2`
         RESOLUTION=`echo $FORMAT | cut -d '-' -f1`
         WIDTH=`echo $RESOLUTION | cut -d 'x' -f1`
         HEIGHT=`echo $RESOLUTION | cut -d 'x' -f2`
@@ -27,23 +27,13 @@ if grep --silent "video=" $CMDLINE ; then
             echo -e "[${_G} width=$WIDTH, height=$HEIGHT ${C_}]"
 
             # screen size
-            SCREENSIZE_KEY="tizen.org\/feature\/screen.size.normal."
-            SCREENSIZE_KEY_WVGA=""$SCREENSIZE_KEY"480.800\" type=\"bool\""
-            SCREENSIZE_KEY_HD=""$SCREENSIZE_KEY"720.1280\" type=\"bool\""
+            SCREENSIZE_KEY="tizen.org\/feature\/screen.size"
+            SCREENSIZE_KEY_NORMAL=""$SCREENSIZE_KEY".normal"
+            SCREENSIZE_KEY_NORMAL_RESOLUTION=""$SCREENSIZE_KEY_NORMAL"."$WIDTH"."$HEIGHT"\" type=\"bool\""
 
-            if [ $WIDTH -eq 480 ] && [ $HEIGHT -eq 800 ] ; then
-                # WVGA
-                sed -i s/"$SCREENSIZE_KEY_WVGA".*\</"$SCREENSIZE_KEY_WVGA"\>true\</ $XML
-                sed -i s/"$SCREENSIZE_KEY_HD".*\</"$SCREENSIZE_KEY_HD"\>false\</ $XML
-            elif [ $WIDTH -eq 720 ] && [ $HEIGHT -eq 1280 ] ; then
-                # HD
-                sed -i s/"$SCREENSIZE_KEY_WVGA".*\</"$SCREENSIZE_KEY_WVGA"\>false\</ $XML
-                sed -i s/"$SCREENSIZE_KEY_HD".*\</"$SCREENSIZE_KEY_HD"\>true\</ $XML
-            else
-                # etc
-                sed -i s/"$SCREENSIZE_KEY_WVGA".*\</"$SCREENSIZE_KEY_WVGA"\>false\</ $XML
-                sed -i s/"$SCREENSIZE_KEY_HD".*\</"$SCREENSIZE_KEY_HD"\>false\</ $XML
-            fi
+            sed -i s/"$SCREENSIZE_KEY_NORMAL".[0-9].*"type=\"bool\"".*true/"&!!!"/ $XML
+            sed -i s/true!!!/false/ $XML
+            sed -i s/"$SCREENSIZE_KEY_NORMAL_RESOLUTION".*\</"$SCREENSIZE_KEY_NORMAL_RESOLUTION"\>true\</ $XML
         fi
 fi
 
