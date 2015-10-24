@@ -1,5 +1,5 @@
 Name: system-plugin-emulator
-Version: 0.1.5
+Version: 0.1.11
 Release: 1
 
 %define systemd_dir     /usr/lib/systemd
@@ -28,21 +28,14 @@ System plugin files for emulator
 find . -name .gitignore -exec rm -f {} \;
 cp -arf filesystem/* %{buildroot}
 
-# for legacy init
-if [ ! -d %{buildroot}/etc/rc.d/rc3.d ]; then
-    mkdir -p %{buildroot}/etc/rc.d/rc3.d
-fi
-ln -s /etc/init.d/mount-hostdir %{buildroot}//etc/rc.d/rc3.d/S03mount-hostdir
-ln -s /etc/init.d/ssh %{buildroot}/etc/rc.d/rc3.d/S50ssh
-
 # for systemd
 # for emulator_preinit.target
 mkdir -p %{buildroot}/%{systemd_dir}/system/basic.target.wants
 ln -s %{systemd_dir}/system/emulator_preinit.target %{buildroot}/%{systemd_dir}/system/basic.target.wants/
 mkdir -p %{buildroot}/%{systemd_dir}/system/emulator_preinit.target.wants
 ln -s %{systemd_dir}/system/emul-setup-audio-volume.service %{buildroot}/%{systemd_dir}/system/emulator_preinit.target.wants/
-ln -s %{systemd_dir}/system/emul-mount-hostdir.service %{buildroot}/%{systemd_dir}/system/emulator_preinit.target.wants/
 ln -s %{systemd_dir}/system/emul-common-preinit.service %{buildroot}/%{systemd_dir}/system/emulator_preinit.target.wants/
+ln -s %{systemd_dir}/system/dev-disk-by\\x2dlabel-emulator\\x2dswap.swap %{buildroot}/%{systemd_dir}/system/emulator_preinit.target.wants/
 # for emulator.target
 mkdir -p %{buildroot}/%{systemd_dir}/system/multi-user.target.wants
 ln -s %{systemd_dir}/system/emulator.target %{buildroot}/%{systemd_dir}/system/multi-user.target.wants/
@@ -59,21 +52,20 @@ mkdir -p %{buildroot}/%{systemd_dir}/system/tizen-boot.target.wants
 ln -s ../wm_ready.service %{buildroot}/%{systemd_dir}/system/tizen-boot.target.wants/
 mkdir -p %{buildroot}/%{systemd_dir}/system/tizen-system.target.wants
 
-# for host file sharing
-mkdir -p %{buildroot}/mnt/host
-
 # include license
 mkdir -p %{buildroot}/usr/share/license
 cp LICENSE %{buildroot}/usr/share/license/%{name}
 
+%if "%{?tizen_profile_name}" == "mobile" || "%{?tizen_profile_name}" == "tv"
+touch %{buildroot}/etc/machine-id
+%else
+rm %{buildroot}/etc/machine-id
+%endif
+
 %post
 #make fstab
 if [ -e /etc/fstab ]; then
-%if "%{?tizen_profile_name}" == "mobile"
-	echo "/opt/var   /var      bind    bind             0 0" >> /etc/fstab
-%endif
 	echo "tmpfs      /tmp      tmpfs   comment=havefs-smackfs-smackfsroot=* 0 0" >> /etc/fstab
-	echo "/dev/vdb   swap      swap    defaults         0 0" >> /etc/fstab
 fi
 
 %posttrans
@@ -81,20 +73,21 @@ fi
 /etc/preconf.d/emulator_ns.preinit
 
 %files
-/etc/emulator/mount-hostdir.sh
-/etc/emulator/model-config.sh
-/etc/emulator/select-boot-animation.sh
-/etc/init.d/mount-hostdir
+/etc/emulator/prerun
+/etc/emulator/prerun.d/set-model-config.sh
+/etc/emulator/prerun.d/generate-emulator-env.sh
+/etc/emulator/prerun.d/opengl-es-setup-yagl-env.sh
 /etc/inittab
+%if "%{?tizen_profile_name}" == "mobile" || "%{?tizen_profile_name}" == "tv"
+/etc/machine-id
+%endif
 /etc/preconf.d/emulator_ns.preinit
 /etc/preconf.d/systemd_conf.preinit
-/etc/profile.d/proxy_setting.sh
+/etc/profile.d/emulator_ecore_workaround.sh
 /etc/rc.d/rc.emul
 /etc/rc.d/rc.firstboot
 /etc/rc.d/rc.shutdown
 /etc/rc.d/rc.sysinit
-/etc/rc.d/rc3.d/S03mount-hostdir
-/etc/rc.d/rc3.d/S50ssh
 /etc/systemd/default-extra-dependencies/ignore-units
 /usr/lib/systemd/system/emulator_preinit.target
 /usr/lib/systemd/system/emulator.target
@@ -107,11 +100,11 @@ fi
 /usr/lib/systemd/system/multi-user.target.wants/tizen-system.target
 /usr/lib/systemd/system/multi-user.target.wants/tizen-runtime.target
 /usr/lib/systemd/system/emul-setup-audio-volume.service
-/usr/lib/systemd/system/emul-mount-hostdir.service
 /usr/lib/systemd/system/emul-common-preinit.service
+/usr/lib/systemd/system/dev-disk-by\x2dlabel-emulator\x2dswap.swap
 /usr/lib/systemd/system/emulator_preinit.target.wants/emul-setup-audio-volume.service
-/usr/lib/systemd/system/emulator_preinit.target.wants/emul-mount-hostdir.service
 /usr/lib/systemd/system/emulator_preinit.target.wants/emul-common-preinit.service
+/usr/lib/systemd/system/emulator_preinit.target.wants/dev-disk-by\x2dlabel-emulator\x2dswap.swap
 /usr/lib/systemd/system/tizen-boot.target
 /usr/lib/systemd/system/tizen-system.target
 /usr/lib/systemd/system/tizen-runtime.target
@@ -122,5 +115,6 @@ fi
 /usr/lib/systemd/system/tizen-generate-env.service
 /usr/lib/udev/rules.d/51-tizen-udev-default.rules
 /usr/lib/udev/rules.d/95-tizen-emulator.rules
-%dir /mnt/host
 /usr/share/license/%{name}
+%manifest packaging/%{name}.manifest
+

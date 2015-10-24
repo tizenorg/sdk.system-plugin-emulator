@@ -1,15 +1,22 @@
-#!/bin/sh
+if [ ! -z $1 ]; then
+        NEW_ROOT=$1
+else
+        NEW_ROOT=
+fi
+
 
 CMDLINE=/proc/cmdline
-XML=/etc/config/model-config.xml
+XML=$NEW_ROOT/etc/config/model-config.xml
 
+echo -e "*** Setting model-config.xml"
 
-echo -e "[${_G} model config setting ${C_}]"
+if [ ! -f $XML ] ; then
+    echo -e "- model-config.xml does not exist"
+    exit
+fi
 
 # display resolution
-if grep --silent "video=" $CMDLINE ; then
-        echo -e "[${_G} modify the resolution value of platform features: ${C_}]"
-
+if grep -q "video=" $CMDLINE ; then
         VIDEO=`sed s/.*video=// $CMDLINE | cut -d ' ' -f1`
         FORMAT=`echo $VIDEO | cut -d ':' -f2 | cut -d ',' -f2`
         RESOLUTION=`echo $FORMAT | cut -d '-' -f1`
@@ -18,13 +25,13 @@ if grep --silent "video=" $CMDLINE ; then
 
         TR_NUM=`echo $WIDTH$HEIGHT | tr -d '[0-9]'`
         if [ "$TR_NUM" != "" ] ; then
-            echo "non-integer argument"
+            echo -e "- resolution value is non-integer argument"
         else
             WIDTH_KEY="tizen.org\/feature\/screen.width\" type=\"int\""
             sed -i s/"$WIDTH_KEY".*\</"$WIDTH_KEY"\>"$WIDTH"\</ $XML
             HEIGHT_KEY="tizen.org\/feature\/screen.height\" type=\"int\""
             sed -i s/"$HEIGHT_KEY".*\</"$HEIGHT_KEY"\>"$HEIGHT"\</ $XML
-            echo -e "[${_G} width=$WIDTH, height=$HEIGHT ${C_}]"
+            echo -e "- width=$WIDTH, height=$HEIGHT"
 
             # screen size
             SCREENSIZE_KEY="tizen.org\/feature\/screen.size"
@@ -38,20 +45,23 @@ if grep --silent "video=" $CMDLINE ; then
 fi
 
 # dot per inch
-if grep --silent "dpi=" $CMDLINE ; then
-        echo -e "[${_G} modify the dpi value of platform features: ${C_}]"
-
+if grep -q "dpi=" $CMDLINE ; then
         DPI=`sed s/.*dpi=// $CMDLINE | cut -d ' ' -f1`
 
         TR_NUM=`echo $DPI | tr -d '[0-9]'`
         if [ "$TR_NUM" != "" ] ; then
-            echo "non-integer argument"
+            echo -e "- dpi value is non-integer argument"
         else
-            SCREEN_DPI=`expr "$DPI" "/" 10`
+            #temp
+            if [ "$DPI" -gt "999" ] ; then
+                SCREEN_DPI=`expr "$DPI" "/" 10`
+            else
+                SCREEN_DPI="$DPI"
+            fi
 
             DPI_KEY="tizen.org\/feature\/screen.dpi\" type=\"int\""
             sed -i s/"$DPI_KEY".*\</"$DPI_KEY"\>"$SCREEN_DPI"\</ $XML
-            echo -e "[${_G} dpi=$SCREEN_DPI ${C_}]"
+            echo -e "- dpi=$SCREEN_DPI"
         fi
 fi
 

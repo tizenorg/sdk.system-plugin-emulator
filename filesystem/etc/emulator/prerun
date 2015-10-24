@@ -1,0 +1,27 @@
+# This script is executed in initramfs.
+
+if [ ! -z $1 ]; then
+        NEW_ROOT=$1
+        # if NEW_ROOT is passed, it executed by initramfs.
+        # So, we should prepare some core utils.
+        /bin/busybox ln -sf /bin/busybox /bin/ln
+        ln -sf /bin/busybox /bin/sed
+        ln -sf /bin/busybox /bin/grep
+        ln -sf /bin/busybox /bin/cut
+        ln -sf /bin/busybox /bin/tr
+        ln -sf /bin/busybox /bin/expr
+        ln -sf /bin/busybox /bin/readlink
+        ln -sf /bin/busybox /bin/rm
+else
+        NEW_ROOT=
+fi
+
+if [ -d $NEW_ROOT/etc/emulator/prerun.d ]; then
+  for i in $NEW_ROOT/etc/emulator/prerun.d/*.sh; do
+    if [ -r $i ]; then
+      . $i
+    fi
+  done
+  unset i
+fi
+

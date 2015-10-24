@@ -4,10 +4,10 @@ DefaultDependencies=no
 
 [Service]
 Type=oneshot
-ExecStart=/opt/usr/devel/usr/bin/amixer "cset" "name='Master Playback Switch'" "1"
-ExecStart=/opt/usr/devel/usr/bin/amixer "cset" "name='Master Playback Volume'" "50"
-ExecStart=/opt/usr/devel/usr/bin/amixer "cset" "name='PCM Playback Switch'" "1"
-ExecStart=/opt/usr/devel/usr/bin/amixer "cset" "name='PCM Playback Volume'" "31"
+ExecStart=/usr/bin/amixer "cset" "name='Master Playback Switch'" "1"
+ExecStart=/usr/bin/amixer "cset" "name='Master Playback Volume'" "50"
+ExecStart=/usr/bin/amixer "cset" "name='PCM Playback Switch'" "1"
+ExecStart=/usr/bin/amixer "cset" "name='PCM Playback Volume'" "31"
 
 [Install]
 WantedBy=emulator_preinit.target

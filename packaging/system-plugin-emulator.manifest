@@ -1,5 +1,16 @@
 <manifest>
- <request>
+  <request>
     <domain name="_"/>
- </request>
+  </request>
+  <assign>
+    <filesystem path='/etc/emulator/prerun.d/generate-emulator-env.sh' exec_label='none' />
+    <filesystem path='/etc/emulator/prerun.d/set-model-config.sh' exec_label='none' />
+    <filesystem path='/etc/rc.d/rc.sysinit' exec_label='none' />
+    <filesystem path='/etc/rc.d/rc.emul' exec_label='none' />
+    <filesystem path='/etc/rc.d/rc.shutdown' exec_label='none' />
+    <filesystem path='/etc/rc.d/rc.firstboot' exec_label='none' />
+    <filesystem path='/etc/preconf.d/emulator_ns.preinit' exec_label='none' />
+    <filesystem path='/etc/preconf.d/systemd_conf.preinit' exec_label='none' />
+    <filesystem path='/etc/profile.d/proxy_setting.sh' exec_label='none' />
+  </assign>
 </manifest>
